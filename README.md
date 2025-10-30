@@ -1,5 +1,5 @@
 # ansible-demo-ci-secure
-This repository container a demo of how you can use Ansible tools to address common development challenges such as testing and supply chain security.
+This repository shows how you can use Ansible tools to address common development challenges such as testing and supply chain security.
 
 This repository contains a demonstration of the following:
 * How you can use Molecule to perform automated testing of content
