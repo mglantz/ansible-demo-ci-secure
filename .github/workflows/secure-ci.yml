@@ -14,7 +14,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
+  # This workflow contains a single job called "pre-merge"
   pre-merge:
     # Name of test
     name: Molecule
@@ -26,12 +26,28 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
       # Runs a single command using the runners shell
       - name: Install prereqs
-        run: pip install ansible ansible-lint yamllint molecule molecule-podman podman
+        run: pip install ansible ansible-lint yamllint molecule molecule-podman podman ansible-sign
 
       - name: Run molecule test
         run: molecule test
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
+
+      - name: Sign changes
+        run: |
+          ansible-sign project gpg-sign .
+          git add .ansible-sign/*
+          git commit -m 'Changes signed by pipeline'
+          git push
+        
