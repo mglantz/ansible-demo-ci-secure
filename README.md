@@ -47,10 +47,11 @@ gpg --list-keys
 gpg --armor --export-secret-key THEID
 ```
 7. Click New repository secret and name it GPG_PASSPHRASE and put the passphrase for importing/exporting your key there.
-8. Go to Ansible Automation Platform and create a new Credential (GPG Public Key) and paste in your public gpg key.
-9. Create a new project and be sure to set "Content signature validation credential" to GPG Public Key Credentials you created in 8. AND also set "Update on launch" for the project.
-10. Create a job template which runs the apache.yml playbook.
-11. Run the playbook and enjoy that it's not been tampered with.
+8. Go to GitHub Settings > Actions > General and set "Workflow permissions" to "Read and write permissions"
+9. Go to Ansible Automation Platform and create a new Credential (GPG Public Key) and paste in your public gpg key.
+10. Create a new project and be sure to set "Content signature validation credential" to GPG Public Key Credentials you created in 9. AND also set "Update on launch" for the project.
+11. Create a job template which runs the apache.yml playbook.
+12. Run the playbook and enjoy that it's not been tampered with.
 
 # test status:
 [![CI](https://github.com/mglantz/ansible-demo-ci/actions/workflows/ci.yml/badge.svg)](https://github.com/mglantz/ansible-demo-ci/actions/workflows/ci.yml)
