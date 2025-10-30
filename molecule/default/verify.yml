@@ -1,0 +1,37 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Check if Apache is installed
+      ansible.builtin.package:
+        name: httpd
+        state: present
+      check_mode: true
+      register: pkg
+
+    - name: Fail if package was not installed
+      ansible.builtin.assert:
+        that:
+          - pkg.changed is false
+        fail_msg: "Package httpd was not installed!"
+        success_msg: "Package httpd was installed."
+
+    - name: Check if Apache service is started
+      ansible.builtin.service:
+        name: httpd
+        state: started
+      check_mode: true
+      register: srvc
+
+    - name: Fail if Apache service was not started
+      ansible.builtin.assert:
+        that:
+          - srvc.changed is false
+        fail_msg: "Service httpd was not both started!"
+        success_msg: "Service httpd was started."
+
+    - name: Check if Apache is servering incoming requests
+      ansible.builtin.uri:
+        url: http://localhost/
+        status_code: 200
