@@ -3,7 +3,7 @@
   hosts: all
   tasks:
     - name: Ensure the httpd software is installed
-      ansible.builtin.package:
+      ansible.builtin.dnf:
         name: httpd
         state: present
     - name: Copy index.html page to html root
